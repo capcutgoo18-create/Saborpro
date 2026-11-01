@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SaborPro</title>
+<style>
+:root{--g:#14532d;--g2:#1f7a45;--y:#facc15;--bg:#eaf0ec;--ink:#1c2420;--mut:#66736b;--ln:#d5ded8;--r:#c2410c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px system-ui,sans-serif;padding-bottom:90px}
+header{background:var(--g);color:#fff;padding:14px 16px 0;position:sticky;top:0;z-index:5}
+.top{display:flex;justify-content:space-between;align-items:center}
+.top h1{margin:0;font:800 19px system-ui}.top small{color:#b6dcc3;font-size:12px}
+.top button{background:#ffffff22;border:0;color:#fff;border-radius:8px;padding:8px 12px;font-weight:700}
+.tabs{display:flex;gap:2px;overflow-x:auto;margin:10px -16px 0;padding:0 10px}
+.tabs button{flex:0 0 auto;background:none;border:0;color:#b6dcc3;padding:11px 14px;font:700 15px system-ui;border-bottom:4px solid transparent}
+.tabs button.on{color:#fff;border-color:var(--y)}
+main{padding:12px 14px;max-width:680px;margin:auto}
+.search{width:100%;padding:12px 14px;border:1.5px solid var(--ln);border-radius:24px;font:16px system-ui;background:#fff}
+.chips{display:flex;gap:6px;overflow-x:auto;margin:10px 0}
+.chips button{flex:0 0 auto;border:1.5px solid var(--ln);background:#fff;border-radius:8px;padding:7px 12px;font:600 14px system-ui;color:var(--ink)}
+.chips button.on{background:var(--y);border-color:var(--y);font-weight:800}
+.row{background:#fff;border-radius:12px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:10px;border-left:6px solid var(--g2)}
+.row .i{flex:1;min-width:0}.row b{display:block}.row small{color:var(--mut);display:block;font-size:13px}
+.p{font:800 17px system-ui;color:var(--g)}.gn{color:var(--g2)}.rd{color:var(--r)}
+.st{display:flex;align-items:center;gap:8px}
+.st button,.ic{width:38px;height:38px;border-radius:50%;border:0;background:var(--g);color:#fff;font:700 20px system-ui}
+.st button.m{background:#dfe8e2;color:var(--g)}.st span{min-width:20px;text-align:center;font-weight:800}
+.bar{position:fixed;left:10px;right:10px;bottom:10px;background:var(--g);color:#fff;border-radius:16px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;z-index:8;max-width:660px;margin:auto;box-shadow:0 6px 20px #0004}
+.bar button{background:var(--y);border:0;border-radius:10px;padding:12px 20px;font:800 16px system-ui;color:var(--ink)}
+.fab{position:fixed;right:18px;bottom:18px;background:var(--y);border:0;border-radius:28px;padding:15px 22px;font:800 16px system-ui;box-shadow:0 6px 18px #0004;z-index:8;color:var(--ink)}
+.k{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.k div{background:#fff;border-radius:12px;padding:12px}.k small{color:var(--mut)}.k b{display:block;font:800 21px system-ui;margin-top:2px}
+h3{margin:16px 0 8px;font-size:16px}
+.card{background:#fff;border-radius:12px;padding:12px;margin-bottom:10px}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:8px 3px;text-align:right;border-bottom:1px solid var(--ln)}th:first-child,td:first-child{text-align:left}
+input,select,textarea{width:100%;font:16px system-ui;padding:11px;border:1.5px solid var(--ln);border-radius:8px;background:#fff;margin-top:4px}
+label{display:block;margin-top:10px;font-weight:700;font-size:14px}
+.btn{width:100%;border:0;border-radius:10px;padding:14px;font:800 16px system-ui;background:var(--g);color:#fff;margin-top:12px}
+.btn.s{background:#dfe8e2;color:var(--g)}.btn.d{background:var(--r)}
+.two{display:flex;gap:8px}.two>*{flex:1}
+#sh{display:none;position:fixed;inset:0;background:#0007;z-index:20}
+#sh>div{position:absolute;bottom:0;left:0;right:0;max-height:92%;overflow:auto;background:var(--bg);border-radius:18px 18px 0 0;padding:16px;max-width:680px;margin:auto}
+#t{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:20px;display:none;z-index:30}
+.tag{display:inline-block;font-size:11px;font-weight:800;background:#dfe8e2;color:var(--g);border-radius:6px;padding:2px 6px;margin-right:4px}
+.mut{color:var(--mut)}
+</style></head><body>
+<header><div class=top><div><h1 id=nm></h1><small>Datos guardados en este celular</small></div><button onclick="eA()">Ajustes</button></div>
+<div class=tabs id=tb></div></header>
+<main id=m></main><div id=bx></div>
+<div id="sh" onclick="if(event.target===this)X()"><div id="shc"></div></div><div id="t"></div>
+<script>
+const $=s=>document.querySelector(s),K='saborpro_v2',PC=['Hamburguesas','Perros','Tamba ranchos','Bebidas'],IC=['Carnes','Panes','Quesos','Vegetales','Bebidas','Otros'];
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5),pad=n=>String(n).padStart(2,'0');
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+const money=n=>(D.cur||'$')+(+n||0).toFixed(2),num=v=>Math.round((+v||0)*100)/100;
+const IG=(n,c,u,pk,pu,st)=>({id:'i'+uid(),n,cat:c,unit:u,pk,pu,stock:st||0});
+function seed(){const i=[IG('Pan de hamburguesa','Panes','und',4.2,12),IG('Carne de res 150 g','Carnes','und',14.4,12),IG('Queso cheddar lámina','Quesos','und',6,24),IG('Ensalada de repollo','Vegetales','porción',3,20),IG('Pan de hot dog','Panes','und',3.6,12),IG('Salchicha jumbo','Carnes','und',9,12),IG('Salsas y cremas','Otros','porción',5,50),IG('Plátano maduro','Vegetales','und',4,8),IG('Gaseosa personal','Bebidas','und',21.6,12),IG('Agua en botella','Bebidas','und',12,12)];
+const f=n=>i.find(x=>x.n.startsWith(n)).id,R=(...a)=>a.map(([n,q])=>({i:f(n),q}));
+return{name:'SaborPro Comida Rápida',cur:'$',g:65,i,p:[
+{id:'p1',n:'Hamburguesa Clásica',cat:PC[0],desc:'Pan, carne, queso y ensalada',price:4.5,extra:.2,margin:'',r:R(['Pan de h',1],['Carne',1],['Queso',1],['Ensalada',1],['Salsas',1])},
+{id:'p2',n:'Hamburguesa Doble',cat:PC[0],desc:'Doble carne y queso',price:7,extra:.2,margin:'',r:R(['Pan de h',1],['Carne',2],['Queso',2],['Ensalada',1],['Salsas',1])},
+{id:'p3',n:'Perro Caliente Especial',cat:PC[1],desc:'Salchicha jumbo y salsas',price:3,extra:.15,margin:'',r:R(['Pan de hot',1],['Salchicha',1],['Salsas',2])},
+{id:'p4',n:'Tamba Rancho Clásico',cat:PC[2],desc:'Plátano, carne y queso',price:6,extra:.2,margin:'',r:R(['Plátano',2],['Carne',1],['Queso',1],['Salsas',1])},
+{id:'p5',n:'Gaseosa personal',cat:PC[3],desc:'',price:1.5,extra:0,margin:'',r:R(['Gaseosa',1])},
+{id:'p6',n:'Agua en botella',cat:PC[3],desc:'',price:1,extra:0,margin:'',r:R(['Agua',1])}],o:[],b:[]}}
+let D=(()=>{try{const d=JSON.parse(localStorage.getItem(K));if(d&&d.p)return d}catch(e){}return seed()})();
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(D))}catch(e){toast('No se pudo guardar')}};
+const P=id=>D.p.find(p=>p.id===id),I=id=>D.i.find(i=>i.id===id),cu=i=>i.pu?i.pk/i.pu:0;
+const cost=p=>p.r.reduce((s,x)=>s+(I(x.i)?cu(I(x.i))*x.q:0),0)+(+p.extra||0);
+const mg=p=>p.margin!==''&&p.margin!=null?+p.margin:D.g,rec=p=>Math.ceil(cost(p)/(1-Math.min(mg(p),95)/100)*10-1e-9)/10;
+let tab='v',cat='Todos',q='',C={},sd=today(),per='h',pdt=today(),bf='t',E=null,EI=null;
+const TABS=[['v','Vender'],['r','Recetas y costos'],['n','Insumos'],['c','Compras'],['s','Resumen']];
+function R(){$('#nm').textContent=D.name;$('#tb').innerHTML=TABS.map(t=>`<button class="${t[0]===tab?'on':''}" onclick="tab='${t[0]}';cat='Todos';q='';R()">${t[1]}</button>`).join('');
+$('#m').innerHTML={v:vV,r:vR,n:vN,c:vC,s:vS}[tab]();
+const n=Object.values(C).reduce((a,b)=>a+b,0),tot=Object.keys(C).reduce((a,id)=>a+(P(id)?P(id).price*C[id]:0),0);
+$('#bx').innerHTML=tab==='v'&&n?`<div class=bar><span>${n} producto${n>1?'s':''}<br><b style="font-size:20px">${money(tot)}</b></span><button onclick=pay()>Cobrar</button></div>`:tab==='r'?`<button class=fab onclick="eP()">+ Receta</button>`:tab==='n'?`<button class=fab onclick="eI()">+ Insumo</button>`:tab==='c'?`<button class=fab onclick="eB()">+ Registrar</button>`:''}
+function toast(m){const t=$('#t');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',2000)}
+const sheet=h=>{$('#shc').innerHTML=h;$('#sh').style.display='block'},X=()=>$('#sh').style.display='none';
+const chips=(L,cur,fn)=>`<div class=chips>${['Todos',...L].map(c=>`<button class="${c===cur?'on':''}" onclick="${fn}('${c}')">${c}</button>`).join('')}</div>`;
+const srch=ph=>`<input class=search placeholder="${ph}" value="${q}" oninput="q=this.value;lst()">`;
+function lst(){const e=$('#ls');if(e)e.innerHTML={v:lV,r:lR,n:lN}[tab]()}
+const mt=(s,...f)=>f.some(x=>(x||'').toLowerCase().includes(q.toLowerCase()));
+/* VENDER */
+function lV(){return D.p.filter(p=>(cat==='Todos'||p.cat===cat)&&(!q||mt(q,p.n,p.cat))).map(p=>`<div class=row><div class=i><b>${p.n}</b><small>${p.desc||p.cat}</small><span class="p">${money(p.price)}</span> <small style="display:inline" class=gn>+${money(p.price-cost(p))}</small></div><div class=st>${C[p.id]?`<button class=m onclick="ad('${p.id}',-1)">−</button><span>${C[p.id]}</span>`:''}<button onclick="ad('${p.id}',1)">+</button></div></div>`).join('')||'<p class=mut>Sin productos.</p>'}
+function vV(){const ds=D.o.filter(o=>o.d===sd);return srch('Buscar producto…')+chips(PC,cat,'sc')+`<div id=ls>${lV()}</div>
+<h3>Pedidos del día</h3><input type=date value="${sd}" onchange="sd=this.value||today();R()"><div style="margin-top:8px">${ds.map(o=>`<div class=row><div class=i><b>${o.l.map(x=>x.q+'× '+x.n).join(', ')}</b><small>${o.h} · ganancia ${money(o.l.reduce((a,x)=>a+x.q*(x.pr-x.c),0))}</small></div><div class=p>${money(o.l.reduce((a,x)=>a+x.q*x.pr,0))}</div><button class=ic style="background:var(--r);font-size:15px" onclick="delO('${o.id}')">✕</button></div>`).join('')||'<p class=mut>Sin pedidos en esta fecha.</p>'}</div>`}
+const sc=c=>{cat=c;R()};
+function ad(id,n){C[id]=(C[id]||0)+n;if(C[id]<=0)delete C[id];R()}
+function use(p,q){p.r.forEach(x=>{const i=I(x.i);if(i)i.stock=num(i.stock-x.q*q)})}
+function pay(){const l=Object.keys(C).filter(P).map(id=>{const p=P(id);use(p,C[id]);return{p:id,n:p.n,q:C[id],pr:p.price,c:cost(p)}}),d=new Date();D.o.push({id:uid(),d:sd,h:pad(d.getHours())+':'+pad(d.getMinutes()),l});C={};save();R();toast('Pedido registrado')}
+function delO(id){const o=D.o.find(x=>x.id===id);if(o)o.l.forEach(x=>P(x.p)&&use(P(x.p),-x.q));D.o=D.o.filter(x=>x.id!==id);save();R()}
+/* RECETAS */
+function lR(){return D.p.filter(p=>(cat==='Todos'||p.cat===cat)&&(!q||mt(q,p.n))).map(p=>{const k=cost(p),g=p.price-k;return`<div class=row onclick="eP('${p.id}')" style="display:block"><div style="display:flex;justify-content:space-between"><b>${p.n}</b><span class=p>${money(p.price)}</span></div><small>${p.r.map(x=>I(x.i)?I(x.i).n+' ×'+x.q:'').join(' · ')||'Sin ingredientes'}</small><div class=two style="margin-top:8px;font-size:13px"><span>Costo<br><b>${money(k)}</b></span><span>Sugerido<br><b>${money(rec(p))}</b></span><span>Ganancia<br><b class="${g<0?'rd':'gn'}">${money(g)} (${p.price?Math.round(g/p.price*100):0}%)</b></span></div></div>`}).join('')||'<p class=mut>Sin recetas.</p>'}
+function vR(){return srch('Buscar receta…')+chips(PC,cat,'sc')+`<div id=ls>${lR()}</div>`}
+function eP(id){E=id?JSON.parse(JSON.stringify(P(id))):{id:'',n:'',cat:PC[0],desc:'',price:0,r:[],extra:0,margin:''};sP()}
+function sP(){sheet(`<h2>${E.id?'Editar receta':'Nueva receta'}</h2><label>Nombre<input value="${E.n}" oninput="E.n=this.value"></label>
+<label>Descripción<input value="${E.desc}" oninput="E.desc=this.value"></label>
+<label>Categoría<select onchange="E.cat=this.value">${PC.map(c=>`<option ${c===E.cat?'selected':''}>${c}</option>`).join('')}</select></label>
+<h3>Ingredientes por unidad</h3>${E.r.map((x,k)=>`<div class=two style="margin-bottom:6px"><select style="flex:2" onchange="E.r[${k}].i=this.value;cl()">${D.i.map(i=>`<option value="${i.id}" ${i.id===x.i?'selected':''}>${i.n} (${i.unit})</option>`).join('')}</select><input type=number step=any value="${x.q}" oninput="E.r[${k}].q=+this.value;cl()"><button class=ic style="flex:0 0 38px;background:var(--r);font-size:15px" onclick="E.r.splice(${k},1);sP()">✕</button></div>`).join('')}
+<button class="btn s" style="margin-top:2px" onclick="if(!D.i.length)return toast('Crea insumos primero');E.r.push({i:D.i[0].id,q:1});sP()">+ Ingrediente</button>
+<label>Otros costos por unidad (gas, bolsa…)<input type=number step=any value="${E.extra}" oninput="E.extra=+this.value;cl()"></label>
+<label>Margen deseado % (vacío = ${D.g}%)<input type=number value="${E.margin}" oninput="E.margin=this.value;cl()"></label>
+<label>Precio de venta<input type=number step=any value="${E.price}" oninput="E.price=+this.value;cl()"></label>
+<div class=card id=cl style="margin-top:10px"></div><button class="btn s" onclick="E.price=rec(E);sP()">Usar precio sugerido</button>
+<div class=two><button class=btn onclick=svP()>Guardar</button>${E.id?`<button class="btn d" onclick=dlP()>Eliminar</button>`:''}</div>`);cl()}
+function cl(){const k=cost(E),g=E.price-k;$('#cl').innerHTML=`Costo: <b>${money(k)}</b><br>Precio sugerido: <b>${money(rec(E))}</b><br>Ganancia por unidad: <b class="${g<0?'rd':'gn'}">${money(g)}</b> (${E.price?Math.round(g/E.price*100):0}%)`}
+function svP(){if(!E.n.trim())return toast('Escribe el nombre');if(E.id)D.p[D.p.findIndex(p=>p.id===E.id)]=E;else{E.id=uid();D.p.push(E)}save();X();R()}
+function dlP(){if(confirm('¿Eliminar esta receta? Los pedidos pasados se conservan.')){D.p=D.p.filter(p=>p.id!==E.id);delete C[E.id];save();X();R()}}
+/* INSUMOS */
+function lN(){return D.i.filter(i=>(cat==='Todos'||i.cat===cat)&&(!q||mt(q,i.n))).map(i=>`<div class=row style="display:block"><div style="display:flex;justify-content:space-between;align-items:center" onclick="eI('${i.id}')"><div><b>${i.n}</b><small>${i.cat} · ${money(i.pk)} / paquete de ${i.pu} ${i.unit}</small></div><span class=p>${money(cu(i))}</span></div><div class=st style="justify-content:space-between;margin-top:8px"><span class="${i.stock<=0?'rd':''}" style="min-width:0">Stock: ${i.stock} ${i.unit}</span><span class=st><button class=m onclick="sk('${i.id}',-1)">−</button><button onclick="sk('${i.id}',1)">+</button></span></div></div>`).join('')||'<p class=mut>Sin insumos.</p>'}
+function vN(){return srch('Buscar insumo…')+chips(IC,cat,'sc')+`<div id=ls>${lN()}</div>`}
+function sk(id,n){const i=I(id);i.stock=num(i.stock+n);save();lst()}
+function eI(id){EI=id?I(id):{id:'',n:'',cat:IC[0],unit:'und',pk:0,pu:1,stock:0};const i=EI;
+sheet(`<h2>${id?'Editar insumo':'Nuevo insumo'}</h2><label>Nombre<input id=in value="${i.n}"></label>
+<label>Categoría<select id=ic>${IC.map(c=>`<option ${c===i.cat?'selected':''}>${c}</option>`).join('')}</select></label>
+<label>Unidad<select id=iu>${['und','porción','g','kg','ml','l'].map(u=>`<option ${u===i.unit?'selected':''}>${u}</option>`).join('')}</select></label>
+<div class=two><label>Precio del paquete<input id=ik type=number step=any value="${i.pk}"></label><label>Unidades por paquete<input id=ip type=number step=any value="${i.pu}"></label></div>
+<label>Stock actual<input id=is type=number step=any value="${i.stock}"></label>
+<div class=two><button class=btn onclick=svI()>Guardar</button>${id?`<button class="btn d" onclick=dlI()>Eliminar</button>`:''}</div>`)}
+function svI(){const i=EI;if(!$('#in').value.trim())return toast('Escribe el nombre');Object.assign(i,{n:$('#in').value,cat:$('#ic').value,unit:$('#iu').value,pk:+$('#ik').value||0,pu:+$('#ip').value||1,stock:+$('#is').value||0});if(!i.id){i.id=uid();D.i.push(i)}save();X();R()}
+function dlI(){if(confirm('¿Eliminar insumo? Se quitará de las recetas.')){D.i=D.i.filter(x=>x.id!==EI.id);D.p.forEach(p=>p.r=p.r.filter(x=>x.i!==EI.id));save();X();R()}}
+/* COMPRAS */
+const BT={i:'Insumo',g:'Gasto operativo',e:'Equipo / activo'};
+function vC(){const sum=t=>D.b.filter(b=>b.t===t).reduce((a,b)=>a+b.m,0),all=D.b.reduce((a,b)=>a+b.m,0);
+const L=[...D.b].filter(b=>bf==='t'||b.t===bf).sort((a,b)=>b.d.localeCompare(a.d));
+return`<div class=k><div><small>Inversión total</small><b>${money(all)}</b></div><div><small>Insumos</small><b class=gn>${money(sum('i'))}</b></div><div><small>Gastos operativos</small><b>${money(sum('g'))}</b></div><div><small>Equipos</small><b>${money(sum('e'))}</b></div></div>
+<div class=chips>${[['t','Todos'],['i','Insumos'],['g','Gastos'],['e','Equipos']].map(x=>`<button class="${bf===x[0]?'on':''}" onclick="bf='${x[0]}';R()">${x[1]}</button>`).join('')}</div>
+${L.slice(0,80).map(b=>`<div class=row><div class=i><b>${b.n}</b><small><span class=tag>${BT[b.t]}</span>${b.d}${b.v?' · '+b.v:''}</small></div><b>${money(b.m)}</b><button class=ic style="background:var(--r);font-size:15px" onclick="delB('${b.id}')">✕</button></div>`).join('')||'<p class=mut>Sin registros.</p>'}`}
+function eB(){sheet(`<h2>Registrar compra o gasto</h2><label>Tipo<select id=bt onchange="bty()"><option value=i>Insumo (suma stock)</option><option value=g>Gasto operativo (gas, bolsas, servicios)</option><option value=e>Equipo / activo (plancha, freidora)</option></select></label>
+<div id=bx2></div><label>Fecha<input id=bd type=date value="${today()}"></label><label>Proveedor (opcional)<input id=bv></label><button class=btn onclick=svB()>Guardar</button>`);bty()}
+function bty(){$('#bx2').innerHTML=$('#bt').value==='i'?`<label>Insumo<select id=bi>${D.i.map(i=>`<option value="${i.id}">${i.n}</option>`).join('')}</select></label><div class=two><label>Paquetes comprados<input id=bq type=number step=any></label><label>Total pagado<input id=bm type=number step=any></label></div>`:`<label>Concepto<input id=bn></label><label>Monto<input id=bm type=number step=any></label>`}
+function svB(){const t=$('#bt').value,m=+$('#bm').value,b={id:uid(),t,d:$('#bd').value||today(),v:$('#bv').value,m};if(m<=0)return toast('Escribe el monto');
+if(t==='i'){const i=I($('#bi').value),q=+$('#bq').value;if(!i||q<=0)return toast('Indica los paquetes');Object.assign(b,{n:'Compra: '+i.n,i:i.id,q});i.stock=num(i.stock+q*i.pu);i.pk=m/q}else{if(!$('#bn').value.trim())return toast('Escribe el concepto');b.n=$('#bn').value}
+D.b.push(b);save();X();R();toast(t==='i'?'Compra registrada · costo actualizado':'Registrado')}
+function delB(id){const b=D.b.find(x=>x.id===id);if(b&&b.i&&I(b.i))I(b.i).stock=num(I(b.i).stock-b.q*I(b.i).pu);D.b=D.b.filter(x=>x.id!==id);save();R()}
+/* RESUMEN */
+const pr=d=>per==='h'?d===today():per==='m'?d.startsWith(today().slice(0,7)):per==='d'?d===pdt:true;
+function calc(){const os=D.o.filter(o=>pr(o.d)),bs=D.b.filter(b=>pr(b.d)),by={};let v=0,c=0;
+os.forEach(o=>o.l.forEach(x=>{v+=x.q*x.pr;c+=x.q*x.c;const a=by[x.n]=by[x.n]||{q:0,v:0,g:0};a.q+=x.q;a.v+=x.q*x.pr;a.g+=x.q*(x.pr-x.c)}));
+const s=t=>bs.filter(b=>b.t===t).reduce((a,b)=>a+b.m,0),sal=bs.reduce((a,b)=>a+b.m,0);return{os,v,c,g:v-c,by,ins:s('i'),gas:s('g'),eq:s('e'),sal,n:bs.length}}
+function vS(){const r=calc(),L={h:'Hoy',m:'Mes actual',d:'Día elegido',t:'Histórico'};
+return`<div class=chips>${Object.keys(L).map(k=>`<button class="${per===k?'on':''}" onclick="per='${k}';R()">${L[k]}</button>`).join('')}</div>${per==='d'?`<input type=date value="${pdt}" onchange="pdt=this.value||today();R()" style="margin-bottom:10px">`:''}
+<div class=k><div><small>Ventas</small><b>${money(r.v)}</b><small>${r.os.length} pedidos · prom. ${money(r.os.length?r.v/r.os.length:0)}</small></div>
+<div><small>Ganancia bruta</small><b class=gn>${money(r.g)}</b><small>Margen ${r.v?(r.g/r.v*100).toFixed(1):0}%</small></div>
+<div><small>Inversión / compras</small><b>${money(r.sal)}</b><small>${r.n} registros</small></div>
+<div><small>Flujo neto (ventas − salidas)</small><b class="${r.v-r.sal<0?'rd':''}">${money(r.v-r.sal)}</b></div>
+<div><small>Costo de lo vendido</small><b>${money(r.c)}</b></div><div><small>Utilidad tras gastos op.</small><b class="${r.g-r.gas<0?'rd':'gn'}">${money(r.g-r.gas)}</b></div></div>
+<div class=card style="font-size:14px">Salidas: insumos <b>${money(r.ins)}</b> · gastos <b>${money(r.gas)}</b> · equipos <b>${money(r.eq)}</b></div>
+<h3>Ganancia por producto</h3><div class=card style="padding:6px"><table><tr><th>Producto</th><th>Cant.</th><th>Ventas</th><th>Ganancia</th></tr>${Object.keys(r.by).map(n=>`<tr><td>${n}</td><td>${r.by[n].q}</td><td>${money(r.by[n].v)}</td><td>${money(r.by[n].g)}</td></tr>`).join('')||'<tr><td colspan=4 class=mut>Sin ventas.</td></tr>'}</table></div>
+<button class="btn s" onclick=rp()>Copiar reporte</button>`}
+function rp(){const r=calc(),L={h:'Hoy',m:'Mes actual',d:pdt,t:'Histórico'};const t=`${D.name} — ${L[per]}\nVentas: ${money(r.v)} (${r.os.length} pedidos)\nCosto: ${money(r.c)}\nGanancia bruta: ${money(r.g)}\nInversión/compras: ${money(r.sal)}\nFlujo neto: ${money(r.v-r.sal)}\n`+Object.keys(r.by).map(n=>`${n}: ${r.by[n].q} und, ganancia ${money(r.by[n].g)}`).join('\n');sheet(`<h2>Reporte</h2><textarea id=rt rows=10>${t}</textarea><button class=btn onclick="$('#rt').select();document.execCommand('copy');toast('Copiado')">Copiar</button>`)}
+/* AJUSTES */
+function eA(){sheet(`<h2>Ajustes</h2><label>Nombre del negocio<input id=an value="${D.name}"></label><div class=two><label>Moneda<input id=ac value="${D.cur}"></label><label>Margen general %<input id=ag type=number value="${D.g}"></label></div>
+<button class=btn onclick="D.name=$('#an').value||'Mi negocio';D.cur=$('#ac').value;D.g=+$('#ag').value||65;save();X();R()">Guardar</button>
+<h3>Respaldo de datos</h3><textarea id=bk rows=5>${JSON.stringify(D)}</textarea><div class=two><button class="btn s" onclick="$('#bk').select();document.execCommand('copy');toast('Copiado')">Copiar</button><button class="btn s" onclick=rs()>Restaurar</button></div>
+<p class=mut style="font-size:13px">Para restaurar, pega un respaldo en el cuadro y pulsa Restaurar.</p>`)}
+function rs(){try{const d=JSON.parse($('#bk').value);if(!d.p||!d.i||!d.o)throw 0;if(confirm('Esto reemplaza todos los datos actuales. ¿Continuar?')){D=d;save();X();R()}}catch(e){toast('Respaldo no válido')}}
+R();
+</script></body></html>
